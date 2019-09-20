@@ -15,9 +15,8 @@ def criptografar(mensagem, chave=None):
 				if lista[x] == 32:
 					pass
 				else:
-					lista[x] += 5
+					lista[x] += (lista[x] + 5) > 122 and \
+						(5 - 26) or 5
 			for x in range(len(lista)):
-				chave_final += chr(lista[x]) 
-	return chave_final, lista
-
-def descriptografar(mensagem, chave=None)
+				chave_final += chr(lista[x])
+	return chave_final
