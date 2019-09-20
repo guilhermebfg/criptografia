@@ -15,8 +15,12 @@ def criptografar(mensagem, chave=None):
 				if lista[x] == 32:
 					pass
 				else:
-					lista[x] += (lista[x] + 5) > 122 and \
-						(5 - 26) or 5
+					if 96 < lista[x] < 123:
+						lista[x] += (lista[x] + 5) > 122 and \
+							(5 - 26) or 5
+					elif 64 < lista[x] < 91:
+						lista[x] += (lista[x] + 5) > 90 and \
+							(5 - 26) or 5
 			for x in range(len(lista)):
 				chave_final += chr(lista[x])
 	return chave_final
