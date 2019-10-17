@@ -1,7 +1,7 @@
-"""Essa caceta."""
+"""Trabalho semestral sobre criptografia."""
 
 
-def criptografar(mensagem, chave=None):
+def tratar_mensagem(mensagem, chave=None, criptografar=True):
     """."""
     mensagem_final = ''
     if mensagem:
@@ -9,36 +9,24 @@ def criptografar(mensagem, chave=None):
         alt = chave and int(chave) or 5
         for x in range(len(mensagem)):
             lista.append(ord(mensagem[x]))
-            if lista[x] == 32:
+            if lista[x] == 32 and criptografar:
                 pass
             else:
-                if 96 < lista[x] < 123:
-                    lista[x] += (lista[x] + alt) > 122 and \
-                        (alt - 25) or alt
-                elif 64 < lista[x] < 91:
-                    lista[x] += (lista[x] + alt) > 90 and \
-                        (alt - 25) or alt
+                if criptografar:
+                    if 96 < lista[x] < 123:
+                        lista[x] += (lista[x] + alt) > 122 and \
+                            (alt - 25) or alt
+                    elif 64 < lista[x] < 91:
+                        lista[x] += (lista[x] + alt) > 90 and \
+                            (alt - 25) or alt
+                else:
+                    if 96 < lista[x] < 123:
+                        lista[x] -= (lista[x] - alt) > 96 and \
+                            alt or (alt - 25)
+                    elif 64 < lista[x] < 91:
+                        lista[x] -= (lista[x] - alt) > 64 and \
+                            alt or (alt - 25)
             mensagem_final += chr(lista[x])
-    print(mensagem_final[::-1])
-
-
-def descriptografar(mensagem, chave=None):
-    """."""
-    mensagem_final = ''
-    if mensagem:
-        lista = []
-        alt = chave and int(chave) or 5
-        for x in range(len(mensagem)):
-            lista.append(ord(mensagem[x]))
-            print(lista)
-            if 96 < lista[x] < 123:
-                lista[x] -= (lista[x] - alt) > 96 and \
-                    alt or (alt - 25)
-            elif 64 < lista[x] < 91:
-                lista[x] -= (lista[x] - alt) > 64 and \
-                    alt or (alt - 25)
-            lista[x] = chr(lista[x])
-            mensagem_final += lista[x]
     print(mensagem_final[::-1])
 
 
@@ -69,7 +57,9 @@ while continuar == 's':
     else:
         chave = None
     if crip_decript == 'c':
-        criptografar(mensagem=string, chave=chave or None)
+        tratar_mensagem(mensagem=string, chave=chave or None,
+                        criptografar=True)
     else:
-        descriptografar(mensagem=string, chave=chave or None)
+        tratar_mensagem(mensagem=string, chave=chave or None,
+                        criptografar=False)
     continuar = input("Deseja continuar? (s/n)\n")
