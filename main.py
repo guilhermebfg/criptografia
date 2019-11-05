@@ -5,8 +5,21 @@ def tratar_mensagem(mensagem, chave=None, criptografar=True):
     """."""
     mensagem_final = ''
     if mensagem:
+        print('Chegamos entao na funcao que vai criptografar a mensagem')
         lista = []
         alt = chave and int(chave) or 5
+        if criptografar:
+            print('Caso nao receba valor da chamada da funcao cada caractere' +
+                  ' ira ser movido 5 casas, exemplo: A ira se tornar F')
+            if chave:
+                print(chave and 'No caso a funcao recebeu o valor de ' +
+                      str(chave) + ' entao A se torna ' + chr(64 + alt))
+        else:
+            print('Caso nao receba valor da chamada da funcao cada caractere' +
+                  ' ira ser movido 5 casas, exemplo: F ira se tornar A')
+            if chave:
+                print(chave and 'No caso a funcao recebeu o valor de ' +
+                      str(chave) + ' entao A se torna ' + chr(64 - alt + 25))
         for x in range(len(mensagem)):
             lista.append(ord(mensagem[x]))
             if lista[x] == 32 and criptografar:
@@ -27,12 +40,18 @@ def tratar_mensagem(mensagem, chave=None, criptografar=True):
                         lista[x] -= (lista[x] - alt) > 64 and \
                             alt or (alt - 25)
             mensagem_final += chr(lista[x])
+        print('Depois de transformar a frase obtemos a mensagem: ' +
+              mensagem_final + '\nE por fim invertemos a mensagem obtendo:')
     print(mensagem_final[::-1])
 
 
 def tratar_chave(chave):
     """."""
     lista = []
+    print("Recebemos a chave desejada\nEm seguida transformamos todos os" +
+          " caracteres em valores da tabela ASCII\nApos isso subtraimos os"
+          " valores para que A seja igual a 1, B igual a 2 e assim por"
+          " diante")
     for x in range(len(chave)):
         if ord(chave[x]) == 32:
             pass
@@ -41,25 +60,23 @@ def tratar_chave(chave):
                 lista.append(ord(chave[x]) - 96)
             elif 64 < ord(chave[x]) < 91:
                 lista.append(ord(chave[x]) - 64)
+            elif 48 < ord(chave[x]) < 58:
+                lista.append(ord(chave[x]) - 48)
+    print('Terminamos com uma lista, somamos todos os valores da lista e ' +
+          'dividimos pela quantidade de valores na lista')
     alt = int(sum(lista) / len(lista))
-    print(alt)
+    print('O resultado e o valor ' + str(alt))
     return alt
 
-continuar = 's'
-
-while continuar == 's':
-    crip_decript = input("Deseja criptografar ou criptografar? (c/d)\n")
-    string = input("Insira a mensagem para criptografar ou descriptografar:\n")
+while True:
+    crip_decript = input("Deseja criptografar ou descriptografar? (c/d)\n")
+    mensagem = input("Insira a mensagem para criptografar" +
+                     " ou descriptografar:\n")
     key = input("Insira a chave ou nao escreva " +
                 "nada para usar a chave padrao:\n")
-    if key != "" and key != " ":
-        chave = tratar_chave(chave=key)
-    else:
-        chave = None
-    if crip_decript == 'c':
-        tratar_mensagem(mensagem=string, chave=chave or None,
-                        criptografar=True)
-    else:
-        tratar_mensagem(mensagem=string, chave=chave or None,
-                        criptografar=False)
+    chave = (key.strip()) and tratar_chave(chave=key)
+    tratar_mensagem(mensagem=mensagem, chave=chave or None,
+                    criptografar=(crip_decript == 'c') and True or False)
     continuar = input("Deseja continuar? (s/n)\n")
+    if continuar != "s":
+        break
